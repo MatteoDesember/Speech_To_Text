@@ -1,31 +1,27 @@
-from my_audio import MyAudio
+from my_audio import *
 import speech_recognition as sr
-import threading
 import tkinter as tk
 from tkinter import filedialog, Tk
 import os
 
-INFO = """  * m - recognize from microphone as source
-  * f - recognize from audio file eg. .wav
+INFO = """  * m - recognize_by_google from microphone as source
+  * f - recognize_by_google from audio file eg. .wav
   * h - print help
   * e - exit program
 """
 
-'''
+"""
     audio_441_16.wav'  # works
     audio_441_24.wav'  # doesn't play
     audio_441_32.wav'  # doesn't open
     audio_480_16.wav'  # works
     audio_480_24.wav'  # doesn't play
     audio_480_32.wav'  # doesn't open
-'''
-
-'''
-    open_file_dialog opens file dialog and return selected file chosen by user as string
-'''
+"""
 
 
 def open_file_dialog():
+    """open_file_dialog opens file dialog and return selected file chosen by user as string"""
     file_path = tk.filedialog.askopenfilename()
     # file_dir = os.path.dirname(os.path.abspath(file))
     # file_name = os.path.basename(os.path.abspath(file))
@@ -36,31 +32,17 @@ def open_file_dialog():
 while True:
     print("Tell me what you wanna do:")
     user_input = input(INFO)
-    # user_input = 'm'
 
     if user_input == 'm':
-        print("Press Ctrl-C to stop recognizing...")
-        try:
-            iterator = 0
-            while True:
-                with sr.Microphone() as source:
-                    print("Say sth... " + str(iterator))
-                    audio_listened = sr.Recognizer().listen(source)
-                    thread1 = threading.Thread(target=MyAudio.recognize, args=(iterator, audio_listened))
-                    thread1.start()
-                    iterator += 1
-
-        except KeyboardInterrupt:
-            # print("Press Ctrl-C to stop recognizing...")
-            pass
+        recognize_from_microphone()
 
     elif user_input == 'f':
         root = Tk()
         root.withdraw()
-        print("Select an audio to recognize...")
+        print("Select an audio file to recognize_by_google...")
         audio_path = open_file_dialog()
         if audio_path:
-            my_audio = MyAudio(os.path.abspath(audio_path), language="pl-PL")
+            my_audio = MyAudio(os.path.abspath(audio_path))
             my_audio.prepare()
             my_audio.divide()
             my_audio.recognize_all()
@@ -69,19 +51,16 @@ while True:
 
     elif user_input == 't':
         print("test")
-        # file_path = os.path.dirname(os.path.abspath(recognizer'C:\Users\Mateusz\Desktop\StT\Speech Recognition\SpeechRecognitionTest\Main_3.wav')) #Static selection
-        # dir = os.path.dirname(os.path.abspath(file_path))
-        # file = os.path.basename(os.path.abspath(file_path))
         file_dir = "test\\test_audio.wav"
-        my_audio = MyAudio(os.path.abspath(file_dir), language="pl-PL")
+        my_audio = MyAudio(os.path.abspath(file_dir))
         my_audio.prepare()
         my_audio.divide()
         my_audio.recognize_all()
 
-        with sr.WavFile('test\\test_audio.wav') as source:
-            audio_listened = sr.Recognizer().listen(source)
-            out = sr.Recognizer().recognize_google(audio_listened, language="pl-PL")
-            print(out)
+        # with sr.WavFile('test\\test_audio.wav') as source:
+        #     audio_listened = sr.Recognizer().listen(source)
+        #     out = sr.Recognizer().recognize_google(audio_listened, language="pl-PL")
+        #     print(out)
 
     elif user_input == 'h':
         print(INFO)
