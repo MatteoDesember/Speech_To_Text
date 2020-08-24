@@ -1,12 +1,10 @@
 from my_audio import *
-import speech_recognition as sr
 import tkinter as tk
 from tkinter import filedialog, Tk
 import os
 
 INFO = """  * m - recognize_by_google from microphone as source
   * f - recognize_by_google from audio file eg. .wav
-  * h - print help
   * e - exit program
 """
 
@@ -42,28 +40,13 @@ while True:
         print("Select an audio file to recognize_by_google...")
         audio_path = open_file_dialog()
         if audio_path:
+            print("Let's start...")
             my_audio = MyAudio(os.path.abspath(audio_path))
             my_audio.prepare()
             my_audio.divide()
             my_audio.recognize_all()
         else:
             print("Doesn't select any file")
-
-    elif user_input == 't':
-        print("test")
-        file_dir = "test\\test_audio.wav"
-        my_audio = MyAudio(os.path.abspath(file_dir))
-        my_audio.prepare()
-        my_audio.divide()
-        my_audio.recognize_all()
-
-        # with sr.WavFile('test\\test_audio.wav') as source:
-        #     audio_listened = sr.Recognizer().listen(source)
-        #     out = sr.Recognizer().recognize_google(audio_listened, language="pl-PL")
-        #     print(out)
-
-    elif user_input == 'h':
-        print(INFO)
 
     elif user_input == 'e' or user_input == 'exit':
         break
