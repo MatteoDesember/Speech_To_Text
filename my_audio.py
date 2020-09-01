@@ -1,4 +1,3 @@
-import soundfile
 from pydub import AudioSegment
 from pydub.silence import detect_nonsilent
 from recognizer import *
@@ -27,18 +26,10 @@ class MyAudio:
                 os.makedirs(self.file_name_without_extension)
 
             # Read audio from file
-            data, sample_rate = soundfile.read(self.file_path)
+            self.sound_segment = AudioSegment.from_file(self.file_path)
 
-            # Save as PCM16. Other bitrate doesn't work well
-            soundfile.write(self.file_name_without_extension + "\\" + TEMP_FILE_NAME,
-                            data,
-                            sample_rate,
-                            subtype='PCM_16')
-
-            # Create sound segment from PCM_16 audio file
-            self.sound_segment = AudioSegment.from_file(self.file_name_without_extension + "\\" + TEMP_FILE_NAME)
-        except Exception:
-            print("Error in prepare")
+        except Exception as e:
+            print("Error in prepare " + str(e))
 
     def divide(self):
         """Divide audio into chunks"""
@@ -50,6 +41,9 @@ class MyAudio:
                                   # This value works well. Set treshold on -20 dBFS
                                   silence_thresh=self.sound_segment.dBFS - 20,
                                   seek_step=1)
+
+        # clear audi_chunk_list
+        self.audio_chunk_list.clear()
 
         for start_i, end_i in chunks:
             keep_silence = 300

@@ -3,18 +3,19 @@ import tkinter as tk
 from tkinter import filedialog, Tk
 import os
 
-INFO = """  * m - recognize_by_google from microphone as source
+INFO = """  * l [lg-LG] - change language (default is: en-EN)
+  * m - recognize_by_google from microphone as source
   * f - recognize_by_google from audio file eg. .wav
   * e - exit program
 """
 
 """
     audio_441_16.wav'  # works
-    audio_441_24.wav'  # doesn't play
-    audio_441_32.wav'  # doesn't open
+    audio_441_24.wav'  # works
+    audio_441_32.wav'  # doesn't work
     audio_480_16.wav'  # works
-    audio_480_24.wav'  # doesn't play
-    audio_480_32.wav'  # doesn't open
+    audio_480_24.wav'  # works
+    audio_480_32.wav'  # doesn't work
 """
 
 
@@ -48,9 +49,29 @@ while True:
         else:
             print("Doesn't select any file")
 
+    elif "l" in user_input:
+        if user_input.find("l") == 0:
+            lg_input = user_input.split(" ")
+            if len(lg_input) == 2:
+                lg = lg_input[1]
+                if lg == "en":
+                    LANGUAGE = "en-EN"
+                elif lg == "pl":
+                    LANGUAGE = "pl-PL"
+                elif lg == "no":
+                    LANGUAGE = "no-NO"
+                elif lg == "ru":
+                    LANGUAGE = "ru-RU"
+                elif lg == "de":
+                    LANGUAGE = "de-DE"
+                else:
+                    LANGUAGE = lg
+                print("Changed language to: " + LANGUAGE)
+            else:
+                print("Does't select an language")
+
     elif user_input == 'e' or user_input == 'exit':
         break
-
     else:
         print("Incorrect command.")
 

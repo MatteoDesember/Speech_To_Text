@@ -4,24 +4,24 @@ from queue import Queue
 import speech_recognition as sr
 import os
 
-TEMP_FILE_NAME = "_temp_file_PCM_16b.wav"
 TXT_FILE = "recognized_text.txt"
 OUTPUT_FOLDER = "out"
 NUMBER_OF_THREADS = 4
 AUDIO_TO_RECOGNIZE_QUEUE = Queue()
+LANGUAGE = "en-EN"
 
 
 def save_to_txt(file_path, text):
     """save text to txt file"""
-    f = open(file_path, "w+")
+    f = open(file_path, "w+", encoding="utf-8")
     f.write(text)
     f.close()
 
 
-def recognize(audio, language="en-US"):
+def recognize(audio):
     """Recognize audio using Google Recognizer"""
     try:
-        text = sr.Recognizer().recognize_google(audio, language=language)
+        text = sr.Recognizer().recognize_google(audio, language=LANGUAGE)
         # text = "Google recognize function disabled"
     except:
         text = "[Not recognized :(]"
@@ -41,7 +41,7 @@ def recognize_audio():
         # Check if type is sr AudioData or dictionary
         if isinstance(item, sr.AudioData):
             # If it is AudioData recognize item
-            text = recognize(item, language="pl-PL")
+            text = recognize(item)
 
             # Create output folder if not exists
             if not os.path.exists(OUTPUT_FOLDER):
@@ -55,8 +55,7 @@ def recognize_audio():
 
         elif isinstance(item, dict):
             # If it is dictionary get audio to recognize from item
-            text = recognize(audio=item["audio_to_recognize"],
-                             language="pl-PL")
+            text = recognize(audio=item["audio_to_recognize"])
             item["text"] = text
 
             file_name = item["path"] + ".txt"
