@@ -1,2 +1,7 @@
-# Speech To Text
-This program allows you to convert an audio recording into a text file using google speech recognition. You can convert a text recorded with your microphone as well.
+# Speech to Text
+
+"SpeechToText" allows you to convert a voice recording into the text file. There is Google speech recognition used and audio file and live voice recording can be the input sources.
+
+### Sample output
+
+![Sample output](doc/doc_image_1.png)
